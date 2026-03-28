@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S099 Car Rentals | Premium Car Rental Service - Mumbai</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            color: #2d3748;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+        }
+
+        /* Header with Animation */
+        .header {
+            background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(0,0,0,0.8));
+            backdrop-filter: blur(20px);
+            color: white;
+            padding: 2rem 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102,126,234,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            letter-spacing: 2px;
+        }
+
+        .header h1 span {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            position: relative;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Enhanced Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            color: #1a202c;
+            border-left: 5px solid #667eea;
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        /* Form Styles Enhanced */
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            outline: none;
+            font-family: inherit;
+            background: white;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            transform: scale(1.01);
+        }
+
+        /* Enhanced Buttons */
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 0.8rem;
+            margin-top: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button.cancel {
+            background: linear-gradient(135deg, #a0aec0, #718096);
+        }
+
+        button.delete {
+            background: linear-gradient(135deg, #f56565, #c53030);
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            margin: 0.2rem;
+        }
+
+        /* Enhanced Table */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+            border-radius: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            font-weight: 700;
+            color: #4a5568;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        tr {
+            transition: all 0.3s;
+        }
+
+        tr:hover {
+            background: linear-gradient(90deg, #fef5e7, #ffffff);
+            transform: scale(1.01);
+        }
+
+        /* Enhanced Status Badges */
+        .status-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .status-confirmed {
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            color: #22543d;
+            box-shadow: 0 2px 5px rgba(72,187,120,0.3);
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #feebc8, #fbd38d);
+            color: #7b341e;
+            box-shadow: 0 2px 5px rgba(237,137,54,0.3);
+        }
+
+        .status-cancelled {
+            background: linear-gradient(135deg, #fed7d7, #fc8181);
+            color: #742a2a;
+            box-shadow: 0 2px 5px rgba(245,101,101,0.3);
+        }
+
+        .status-completed {
+            background: linear-gradient(135deg, #bee3f8, #90cdf4);
+            color: #2c5282;
+            box-shadow: 0 2px 5px rgba(66,153,225,0.3);
+        }
+
+        /* Enhanced Car Cards with Images */
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .car-card {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            border-radius: 20px;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .car-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .car-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #fff5e6, #ffffff);
+            box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+        }
+
+        .car-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .car-card:hover .car-image {
+            transform: scale(1.05);
+        }
+
+        .car-info {
+            padding: 1.2rem;
+        }
+
+        .car-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .car-details {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .car-details span {
+            background: #edf2f7;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            color: #667eea;
+            font-weight: bold;
+            margin-top: 0.8rem;
+        }
+
+        .price small {
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        /* Enhanced Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 1.8rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #4a5568;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* Alert Enhanced */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            backdrop-filter: blur(10px);
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            color: #22543d;
+            border-left: 5px solid #48bb78;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #fed7d7, #fc8181);
+            color: #742a2a;
+            border-left: 5px solid #f56565;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .booking-id {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #667eea;
+            font-weight: bold;
+            background: #edf2f7;
+            padding: 0.2rem 0.5rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: white;
+            margin-top: 2rem;
+            background: rgba(0,0,0,0.5);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .cars-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Indian Rupee symbol styling */
+        .rupee-symbol {
+            font-weight: bold;
+        }
+
+        /* Hide AngularJS templates until loaded */
+        [ng-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
+<body ng-app="carRentalApp" ng-cloak>
+    <div class="header">
+        <h1>🚗 <span>S099 Car Rentals</span> 🚗</h1>
+        <p>Premium Luxury & Economy Car Rentals | Drive in Style & Comfort | Mumbai's Trusted Service</p>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem;">⭐ 4.9/5 Rating | 5000+ Happy Customers | 24/7 Support ⭐</p>
+    </div>
+
+    <div class="container" ng-controller="MainController as ctrl">
+        <!-- Stats Dashboard -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number" ng-bind="ctrl.stats.total"></div>
+                <div class="stat-label">Total Bookings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-number" ng-bind="ctrl.stats.confirmed"></div>
+                <div class="stat-label">Confirmed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-number" ng-bind="ctrl.stats.pending"></div>
+                <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏁</div>
+                <div class="stat-number" ng-bind="ctrl.stats.completed"></div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+
+        <!-- Alert Message -->
+        <div ng-if="ctrl.message" class="alert" ng-class="ctrl.messageClass">
+            <span ng-bind="ctrl.message"></span>
+        </div>
+
+        <!-- Booking Form -->
+        <div class="card">
+            <h2 ng-bind="ctrl.editMode ? '✏️ Update Booking' : '📅 New Booking'"></h2>
+            <form ng-submit="ctrl.saveBooking()">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>👤 Customer Name *</label>
+                        <input type="text" ng-model="ctrl.formData.customerName" placeholder="Enter full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📧 Email *</label>
+                        <input type="email" ng-model="ctrl.formData.email" placeholder="customer@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📞 Phone Number *</label>
+                        <input type="tel" ng-model="ctrl.formData.phone" placeholder="+91 9876543210" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>📅 Pickup Date & Time *</label>
+                        <input type="datetime-local" ng-model="ctrl.formData.pickupDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📅 Return Date & Time *</label>
+                        <input type="datetime-local" ng-model="ctrl.formData.returnDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>🏷️ Booking Status</label>
+                        <select ng-model="ctrl.formData.status">
+                            <option value="pending">⏳ Pending</option>
+                            <option value="confirmed">✅ Confirmed</option>
+                            <option value="completed">🏁 Completed</option>
+                            <option value="cancelled">❌ Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>📍 Pickup Location *</label>
+                    <input type="text" ng-model="ctrl.formData.pickupLocation" placeholder="City, Address" required>
+                    <small style="color: #667eea; display: block; margin-top: 5px;">📍 Default location: Jogeshwari East, Mumbai (near Western Express Highway)</small>
+                </div>
+
+                <div class="form-group">
+                    <label>🚘 Select Your Dream Car *</label>
+                    <div class="cars-grid">
+                        <div ng-repeat="car in ctrl.cars" 
+                             class="car-card" 
+                             ng-class="{'selected': ctrl.formData.carId === car.id}"
+                             ng-click="ctrl.selectCar(car.id)">
+                            <img class="car-image" ng-src="{{ car.image }}" alt="{{ car.name }}">
+                            <div class="car-info">
+                                <div class="car-name" ng-bind="car.name"></div>
+                                <div class="car-details">
+                                    <span>🚗 <span ng-bind="car.type"></span></span>
+                                    <span>👥 <span ng-bind="car.seats"></span> seats</span>
+                                    <span>⚙️ <span ng-bind="car.transmission"></span></span>
+                                    <span>⛽ <span ng-bind="car.fuel"></span></span>
+                                </div>
+                                <div class="price">₹<span ng-bind="car.pricePerDay"></span> <small>/day</small></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="!ctrl.formData.carId && ctrl.formData.submitted" style="color: #f56565; margin-top: 0.8rem; text-align: center;">
+                        ⚠️ Please select a car to continue
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>💬 Special Requests</label>
+                    <textarea ng-model="ctrl.formData.specialRequests" rows="2" placeholder="Any special requirements (GPS, child seat, driver, etc.)..."></textarea>
+                </div>
+
+                <div>
+                    <button type="submit" ng-bind="ctrl.editMode ? '✏️ Update Booking' : '✅ Create Booking'"></button>
+                    <button type="button" ng-if="ctrl.editMode" class="cancel" ng-click="ctrl.resetForm()">❌ Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Bookings List -->
+        <div class="card">
+            <h2>📋 All Bookings</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Customer</th>
+                            <th>Car</th>
+                            <th>Pickup</th>
+                            <th>Return</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="booking in ctrl.bookings | orderBy:'-createdAt'">
+                            <td><span class="booking-id" ng-bind="booking.bookingId"></span></td>
+                            <td>
+                                <strong ng-bind="booking.customerName"></strong><br>
+                                <small ng-bind="booking.email"></small>
+                            </td>
+                            <td ng-bind="booking.carName"></td>
+                            <td ng-bind="booking.pickupDate | date:'dd/MM/yyyy HH:mm'"></td>
+                            <td ng-bind="booking.returnDate | date:'dd/MM/yyyy HH:mm'"></td>
+                            <td><strong style="color: #667eea;">₹<span ng-bind="booking.totalPrice"></span></strong></td>
+                            <td>
+                                <span class="status-badge" ng-class="{
+                                    'status-confirmed': booking.status === 'confirmed',
+                                    'status-pending': booking.status === 'pending',
+                                    'status-cancelled': booking.status === 'cancelled',
+                                    'status-completed': booking.status === 'completed'
+                                }" ng-bind="booking.status | uppercase">
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn-small" ng-click="ctrl.editBooking(booking)">✏️ Edit</button>
+                                <button class="btn-small delete" ng-click="ctrl.deleteBooking(booking.id)">🗑️ Delete</button>
+                                <button class="btn-small" ng-if="booking.status === 'pending'" ng-click="ctrl.updateStatus(booking.id, 'confirmed')">✅ Confirm</button>
+                                <button class="btn-small" ng-if="booking.status === 'confirmed'" ng-click="ctrl.updateStatus(booking.id, 'completed')">🏁 Complete</button>
+                            </td>
+                        </tr>
+                        <tr ng-if="ctrl.bookings.length === 0">
+                            <td colspan="8" style="text-align: center; padding: 2.5rem;">
+                                🚗 No bookings found. Start by creating your first booking!
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🌟 S099 Car Rentals | Premium Quality Service Since 2024 | Mumbai's Premier Rental Service 🌟</p>
+            <p style="font-size: 0.85rem; margin-top: 0.5rem;">📍 Main Office: Jogeshwari East, Mumbai - 400060 | Nearby Landmark: Western Express Highway</p>
+            <p style="font-size: 0.8rem; margin-top: 0.5rem;">📞 24/7 Support: +91-98765-43210 | ✉️ support@s099carrentals.com</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize AngularJS app
+        var app = angular.module('carRentalApp', []);
+        
+        // Mock API Service with Car Images
+        class MockAPI {
+            constructor() {
+                if (!localStorage.getItem('carBookings')) {
+                    var sampleBookings = [
+                        {
+                            id: '1',
+                            bookingId: 'S0990001',
+                            customerName: 'Rahul Sharma',
+                            email: 'rahul.sharma@example.com',
+                            phone: '+919876543210',
+                            pickupDate: new Date('2024-12-25T10:00:00').toISOString(),
+                            returnDate: new Date('2024-12-28T10:00:00').toISOString(),
+                            pickupLocation: 'Jogeshwari East, Mumbai (Near Western Express Highway)',
+                            carId: 'car1',
+                            carName: 'Tesla Model S',
+                            totalPrice: 9775,
+                            status: 'confirmed',
+                            specialRequests: 'GPS needed, prefer contactless pickup',
+                            createdAt: new Date('2024-12-20').toISOString()
+                        },
+                        {
+                            id: '2',
+                            bookingId: 'S0990002',
+                            customerName: 'Priya Patel',
+                            email: 'priya.patel@example.com',
+                            phone: '+919876543211',
+                            pickupDate: new Date('2024-12-26T14:30:00').toISOString(),
+                            returnDate: new Date('2024-12-29T14:30:00').toISOString(),
+                            pickupLocation: 'Jogeshwari East, Mumbai',
+                            carId: 'car2',
+                            carName: 'BMW X5',
+                            totalPrice: 10200,
+                            status: 'pending',
+                            specialRequests: 'Need child seat',
+                            createdAt: new Date('2024-12-21').toISOString()
+                        }
+                    ];
+                    localStorage.setItem('carBookings', JSON.stringify(sampleBookings));
+                }
+                
+                this.cars = [
+                    { id: 'car1', name: 'Tesla Model S', type: 'Electric Luxury', seats: 5, transmission: 'Automatic', fuel: 'Electric', pricePerDay: 9775, image: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=400&h=250&fit=crop' },
+                    { id: 'car2', name: 'BMW X5', type: 'Luxury SUV', seats: 5, transmission: 'Automatic', fuel: 'Petrol', pricePerDay: 10200, image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=250&fit=crop' },
+                    { id: 'car3', name: 'Mercedes-Benz E-Class', type: 'Luxury Sedan', seats: 5, transmission: 'Automatic', fuel: 'Petrol', pricePerDay: 8925, image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=400&h=250&fit=crop' },
+                    { id: 'car4', name: 'Porsche 911', type: 'Sports Car', seats: 4, transmission: 'Manual', fuel: 'Petrol', pricePerDay: 16575, image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=250&fit=crop' },
+                    { id: 'car5', name: 'Range Rover Sport', type: 'Premium SUV', seats: 5, transmission: 'Automatic', fuel: 'Diesel', pricePerDay: 12325, image: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=250&fit=crop' },
+                    { id: 'car6', name: 'Audi A6', type: 'Executive Sedan', seats: 5, transmission: 'Automatic', fuel: 'Petrol', pricePerDay: 8075, image: 'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=400&h=250&fit=crop' }
+                ];
+            }
+            
+            getCars() {
+                return Promise.resolve([...this.cars]);
+            }
+            
+            getBookings() {
+                var bookings = JSON.parse(localStorage.getItem('carBookings') || '[]');
+                return Promise.resolve(bookings);
+            }
+            
+            createBooking(bookingData) {
+                var bookings = JSON.parse(localStorage.getItem('carBookings') || '[]');
+                var newId = (bookings.length + 1).toString();
+                var bookingCount = bookings.length + 1;
+                var newBooking = {
+                    id: newId,
+                    bookingId: 'S099' + String(bookingCount).padStart(4, '0'),
+                    ...bookingData,
+                    createdAt: new Date().toISOString()
+                };
+                bookings.push(newBooking);
+                localStorage.setItem('carBookings', JSON.stringify(bookings));
+                return Promise.resolve(newBooking);
+            }
+            
+            updateBooking(id, bookingData) {
+                var bookings = JSON.parse(localStorage.getItem('carBookings') || '[]');
+                var index = bookings.findIndex(function(b) { return b.id === id; });
+                if (index !== -1) {
+                    bookings[index] = { ...bookings[index], ...bookingData, id: bookings[index].id, bookingId: bookings[index].bookingId };
+                    localStorage.setItem('carBookings', JSON.stringify(bookings));
+                    return Promise.resolve(bookings[index]);
+                }
+                return Promise.reject('Booking not found');
+            }
+            
+            deleteBooking(id) {
+                var bookings = JSON.parse(localStorage.getItem('carBookings') || '[]');
+                bookings = bookings.filter(function(b) { return b.id !== id; });
+                localStorage.setItem('carBookings', JSON.stringify(bookings));
+                return Promise.resolve({ message: 'Deleted' });
+            }
+        }
+        
+        var api = new MockAPI();
+        
+        app.controller('MainController', ['$scope', function($scope) {
+            var ctrl = this;
+            
+            ctrl.bookings = [];
+            ctrl.cars = [];
+            ctrl.editMode = false;
+            ctrl.editingId = null;
+            ctrl.message = '';
+            ctrl.messageClass = '';
+            ctrl.stats = {
+                total: 0,
+                confirmed: 0,
+                pending: 0,
+                completed: 0
+            };
+            
+            ctrl.formData = {
+                customerName: '',
+                email: '',
+                phone: '',
+                pickupDate: '',
+                returnDate: '',
+                pickupLocation: 'Jogeshwari East, Mumbai (Near Western Express Highway)',
+                carId: null,
+                specialRequests: '',
+                status: 'pending',
+                submitted: false
+            };
+            
+            function showMessage(msg, isError) {
+                ctrl.message = msg;
+                ctrl.messageClass = isError ? 'alert-error' : 'alert-success';
+                setTimeout(function() {
+                    ctrl.message = '';
+                    $scope.$applyAsync();
+                }, 3000);
+            }
+            
+            function calculateTotalPrice(carId, pickupDate, returnDate) {
+                if (!carId || !pickupDate || !returnDate) return 0;
+                var car = ctrl.cars.find(function(c) { return c.id === carId; });
+                if (!car) return 0;
+                
+                var start = new Date(pickupDate);
+                var end = new Date(returnDate);
+                var diffTime = Math.abs(end - start);
+                var days = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+                return car.pricePerDay * days;
+            }
+            
+            function updateStats() {
+                ctrl.stats.total = ctrl.bookings.length;
+                ctrl.stats.confirmed = ctrl.bookings.filter(function(b) { return b.status === 'confirmed'; }).length;
+                ctrl.stats.pending = ctrl.bookings.filter(function(b) { return b.status === 'pending'; }).length;
+                ctrl.stats.completed = ctrl.bookings.filter(function(b) { return b.status === 'completed'; }).length;
+            }
+            
+            ctrl.loadCars = function() {
+                api.getCars().then(function(cars) {
+                    ctrl.cars = cars;
+                    $scope.$applyAsync();
+                }).catch(function(err) {
+                    console.error('Error loading cars:', err);
+                    showMessage('Error loading cars', true);
+                });
+            };
+            
+            ctrl.loadBookings = function() {
+                api.getBookings().then(function(bookings) {
+                    ctrl.bookings = bookings;
+                    updateStats();
+                    $scope.$applyAsync();
+                    showMessage('✨ Data loaded successfully! Welcome to S099 Car Rentals, Mumbai', false);
+                }).catch(function(err) {
+                    console.error('Error loading bookings:', err);
+                    showMessage('Error loading bookings', true);
+                });
+            };
+            
+            ctrl.selectCar = function(carId) {
+                ctrl.formData.carId = carId;
+                if (ctrl.formData.pickupDate && ctrl.formData.returnDate) {
+                    var total = calculateTotalPrice(carId, ctrl.formData.pickupDate, ctrl.formData.returnDate);
+                    if (total > 0) {
+                        showMessage('💰 Total price: ₹' + total + ' for this rental (includes taxes & insurance)', false);
+                    }
+                }
+            };
+            
+            ctrl.saveBooking = function() {
+                ctrl.formData.submitted = true;
+                
+                if (!ctrl.formData.customerName || !ctrl.formData.email || !ctrl.formData.phone) {
+                    showMessage('⚠️ Please fill all required fields', true);
+                    return;
+                }
+                
+                if (!ctrl.formData.carId) {
+                    showMessage('⚠️ Please select a car to continue', true);
+                    return;
+                }
+                
+                if (!ctrl.formData.pickupDate || !ctrl.formData.returnDate) {
+                    showMessage('⚠️ Please select pickup and return dates', true);
+                    return;
+                }
+                
+                if (!ctrl.formData.pickupLocation || ctrl.formData.pickupLocation.trim() === '') {
+                    showMessage('⚠️ Please enter pickup location', true);
+                    return;
+                }
+                
+                var start = new Date(ctrl.formData.pickupDate);
+                var end = new Date(ctrl.formData.returnDate);
+                if (end <= start) {
+                    showMessage('⚠️ Return date must be after pickup date', true);
+                    return;
+                }
+                
+                var selectedCar = ctrl.cars.find(function(c) { return c.id === ctrl.formData.carId; });
+                var totalPrice = calculateTotalPrice(ctrl.formData.carId, ctrl.formData.pickupDate, ctrl.formData.returnDate);
+                
+                var bookingData = {
+                    customerName: ctrl.formData.customerName,
+                    email: ctrl.formData.email,
+                    phone: ctrl.formData.phone,
+                    pickupDate: ctrl.formData.pickupDate,
+                    returnDate: ctrl.formData.returnDate,
+                    pickupLocation: ctrl.formData.pickupLocation,
+                    carId: ctrl.formData.carId,
+                    carName: selectedCar ? selectedCar.name : 'Unknown',
+                    specialRequests: ctrl.formData.specialRequests,
+                    status: ctrl.formData.status,
+                    totalPrice: totalPrice
+                };
+                
+                if (ctrl.editMode && ctrl.editingId) {
+                    api.updateBooking(ctrl.editingId, bookingData).then(function() {
+                        showMessage('✅ Booking updated successfully!', false);
+                        ctrl.resetForm();
+                        ctrl.loadBookings();
+                        $scope.$applyAsync();
+                    }).catch(function() {
+                        showMessage('Failed to update booking', true);
+                    });
+                } else {
+                    api.createBooking(bookingData).then(function(response) {
+                        showMessage('🎉 Booking ' + response.bookingId + ' created! Total: ₹' + response.totalPrice + '. Pickup from ' + response.pickupLocation + '. Thank you for choosing S099!', false);
+                        ctrl.resetForm();
+                        ctrl.loadBookings();
+                        $scope.$applyAsync();
+                    }).catch(function() {
+                        showMessage('Failed to create booking', true);
+                    });
+                }
+            };
+            
+            ctrl.editBooking = function(booking) {
+                ctrl.editMode = true;
+                ctrl.editingId = booking.id;
+                ctrl.formData = {
+                    customerName: booking.customerName,
+                    email: booking.email,
+                    phone: booking.phone,
+                    pickupDate: new Date(booking.pickupDate).toISOString().slice(0, 16),
+                    returnDate: new Date(booking.returnDate).toISOString().slice(0, 16),
+                    pickupLocation: booking.pickupLocation || 'Jogeshwari East, Mumbai (Near Western Express Highway)',
+                    carId: booking.carId,
+                    specialRequests: booking.specialRequests || '',
+                    status: booking.status,
+                    submitted: false
+                };
+                $scope.$applyAsync();
+            };
+            
+            ctrl.deleteBooking = function(id) {
+                if (confirm('Are you sure you want to delete this booking?')) {
+                    api.deleteBooking(id).then(function() {
+                        showMessage('🗑️ Booking deleted successfully', false);
+                        ctrl.loadBookings();
+                        if (ctrl.editMode && ctrl.editingId === id) {
+                            ctrl.resetForm();
+                        }
+                        $scope.$applyAsync();
+                    }).catch(function() {
+                        showMessage('Failed to delete booking', true);
+                    });
+                }
+            };
+            
+            ctrl.updateStatus = function(id, newStatus) {
+                api.getBookings().then(function(bookings) {
+                    var booking = bookings.find(function(b) { return b.id === id; });
+                    if (booking) {
+                        booking.status = newStatus;
+                        return api.updateBooking(id, booking);
+                    }
+                    return Promise.reject();
+                }).then(function() {
+                    showMessage('✅ Booking status updated to ' + newStatus.toUpperCase(), false);
+                    ctrl.loadBookings();
+                    $scope.$applyAsync();
+                }).catch(function() {
+                    showMessage('Failed to update status', true);
+                });
+            };
+            
+            ctrl.resetForm = function() {
+                ctrl.editMode = false;
+                ctrl.editingId = null;
+                ctrl.formData = {
+                    customerName: '',
+                    email: '',
+                    phone: '',
+                    pickupDate: '',
+                    returnDate: '',
+                    pickupLocation: 'Jogeshwari East, Mumbai (Near Western Express Highway)',
+                    carId: null,
+                    specialRequests: '',
+                    status: 'pending',
+                    submitted: false
+                };
+                $scope.$applyAsync();
+            };
+            
+            // Initialize
+            ctrl.loadCars();
+            ctrl.loadBookings();
+        }]);
+    </script>
+</body>
+</html>	
